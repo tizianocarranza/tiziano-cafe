@@ -1,0 +1,268 @@
+<section class="menu">
+    <div class="menu-header">
+        <p>MENU</p>
+        <span>Season 2026</span>
+    </div>
+
+    <div class="menu-list">
+        <article class="menu-item">
+            <div class="menu-left">
+                <h2>ESPRESSO</h2>
+                <p>Rich chocolate · Caramel · Citrus finish</p>
+            </div>
+
+            <div class="menu-right">
+                <span>3.50</span>
+
+                <div class="coffee-preview espresso"></div>
+            </div>
+        </article>
+
+        <article class="menu-item">
+            <div class="menu-left">
+                <h2>LATTE</h2>
+                <p>Velvety milk · Sweet · Balanced</p>
+            </div>
+
+            <div class="menu-right">
+                <span>5.20</span>
+
+                <div class="coffee-preview latte"></div>
+            </div>
+        </article>
+
+        <article class="menu-item">
+            <div class="menu-left">
+                <h2>MATCHA</h2>
+                <p>Ceremonial grade · Oat milk</p>
+            </div>
+
+            <div class="menu-right">
+                <span>5.80</span>
+
+                <div class="coffee-preview matcha"></div>
+            </div>
+        </article>
+
+        <article class="menu-item">
+            <div class="menu-left">
+                <h2>AFFOGATO</h2>
+                <p>Vanilla ice cream · Double espresso</p>
+            </div>
+
+            <div class="menu-right">
+                <span>6.40</span>
+
+                <div class="coffee-preview affogato"></div>
+            </div>
+        </article>
+    </div>
+</section>
+
+<script>
+    import gsap from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    window.addEventListener("load", () => {
+        const section = document.querySelector(".menu");
+        const header = document.querySelectorAll(".menu-header > *");
+        const items = document.querySelectorAll(".menu-item");
+
+        gsap.set(header, {
+            y: 24,
+            opacity: 0,
+        });
+
+        gsap.set(items, {
+            "--line-scale": 0,
+            y: 42,
+            opacity: 0,
+        });
+
+        gsap.to(header, {
+            y: 0,
+            opacity: 1,
+            duration: 0.8,
+            stagger: 0.08,
+            ease: "power4.out",
+            scrollTrigger: {
+                trigger: section,
+                start: "top 72%",
+                once: true,
+            },
+        });
+
+        gsap.to(items, {
+            "--line-scale": 1,
+            y: 0,
+            opacity: 1,
+            duration: 1,
+            stagger: 0.12,
+            ease: "power4.out",
+            scrollTrigger: {
+                trigger: ".menu-list",
+                start: "top 78%",
+                once: true,
+            },
+        });
+    });
+</script>
+
+<style>
+    .menu {
+        padding: 24vh 6rem;
+    }
+
+    .menu-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 6rem;
+        font-size: 0.75rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+    }
+
+    .menu-list {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .menu-item {
+        position: relative;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        padding: 3.5rem 0;
+
+        border-top: 0;
+
+        cursor: pointer;
+
+        transition:
+            padding-left 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+            opacity 0.45s ease;
+    }
+
+    .menu-item,
+    .menu-header > * {
+        will-change: transform, opacity;
+    }
+
+    .menu-item::before,
+    .menu-item::after {
+        will-change: transform;
+    }
+
+    .menu-item::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        width: 100%;
+        height: 1px;
+
+        background: rgba(0, 0, 0, 0.12);
+
+        transform: scaleX(var(--line-scale, 1));
+        transform-origin: left;
+    }
+
+    .menu-item:last-child::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+
+        width: 100%;
+        height: 1px;
+
+        background: rgba(0, 0, 0, 0.12);
+
+        transform: scaleX(var(--line-scale, 1));
+        transform-origin: left;
+    }
+
+    .menu-item:hover {
+        padding-left: 2rem;
+    }
+
+    .menu-item:hover h2 {
+        letter-spacing: 0.03em;
+    }
+
+    .menu-item:hover .coffee-preview {
+        transform: rotate(180deg) scale(1.15);
+    }
+
+    .menu-left h2 {
+        margin: 0;
+
+        font-size: clamp(3rem, 8vw, 7rem);
+        line-height: 0.9;
+        font-weight: 900;
+        color: var(--text);
+
+        transition:
+            letter-spacing 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+            transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .menu-left p {
+        margin-top: 0.8rem;
+        font-size: 0.95rem;
+        letter-spacing: 0.08em;
+
+        opacity: 0.6;
+    }
+
+    .menu-right {
+        display: flex;
+        align-items: center;
+        gap: 3rem;
+    }
+
+    .menu-right span {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #6f3c0d;
+    }
+
+    .coffee-preview {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+
+        transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .espresso {
+        background: radial-gradient(
+            circle at 35% 35%,
+            #8c5523,
+            #5b3110 65%,
+            #2d1808
+        );
+    }
+
+    .latte {
+        background: radial-gradient(
+            circle at 45% 40%,
+            #fff5e8,
+            #c78d57 45%,
+            #60310f 80%
+        );
+    }
+
+    .matcha {
+        background: radial-gradient(circle, #8cbf68, #507b3d, #28401f);
+    }
+
+    .affogato {
+        background: radial-gradient(circle, #fff8ef, #b36d39 45%, #44210d);
+    }
+</style>

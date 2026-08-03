@@ -19,7 +19,7 @@ import "../styles/global.css";
 	</body>
 </html>
 
-<style>
+<style is:global>
 	@font-face {
 		font-family: "CabinetGrotesk-Variable";
 		src:
@@ -35,13 +35,15 @@ import "../styles/global.css";
 	}
 
 	:root {
-		--bg: #f7f5f2;
-		--accent: #8b6b4d;
+		--bg: #f7f4ef;
+		--accent: #6f3c0d;
+		--text: #3b2414;
 	}
-	
+
 	:root[data-theme="dark"] {
 		--bg: #1a1a1a;
-		--accent: #8b6b4d;
+		--accent: #6f3c0d;
+		--text: #f7f4ef;
 	}
 
 	html,
@@ -51,5 +53,10 @@ import "../styles/global.css";
 
 		font-family: CabinetGrotesk-Variable;
 		background-color: var(--bg);
+		color: var(--text);
+	}
+
+	section {
+		margin-bottom: 8rem;
 	}
 </style>

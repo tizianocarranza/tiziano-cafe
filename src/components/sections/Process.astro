@@ -1,0 +1,498 @@
+---
+const steps = [
+    {
+        number: "01",
+        title: "Beans",
+        description:
+            "Sourced from farms that value quality, sustainability and craft.",
+        imageSrc: "/assets/beans.png",
+        className: "step-beans",
+    },
+    {
+        number: "02",
+        title: "Roast",
+        description: "Heat, time and patience transform potential into flavor.",
+        imageSrc: "/assets/roast.png",
+        className: "step-roast",
+    },
+    {
+        number: "03",
+        title: "Brew",
+        description: "Extraction is where craft meets precision.",
+        imageSrc: "/assets/brew.png",
+        className: "step-brew",
+    },
+    {
+        number: "04",
+        title: "Create",
+        description: "Ideas, conversations and projects begin here.",
+        imageSrc: "/assets/create.png",
+        className: "step-create",
+    },
+];
+---
+
+<section class="process">
+    <div class="process-sticky">
+        <div class="process-copy">
+            <span>OUR PROCESS</span>
+            <h2>
+                <span>A JOURNEY</span>
+                <span>OF CRAFT</span>
+                <span>AND PURPOSE.</span>
+            </h2>
+            <p>
+                WE TURN INGREDIENTS<br />
+                INTO MOMENTS.<br />
+                EVERY STEP MATTERS.
+            </p>
+        </div>
+
+        <div class="process-orbit">
+            <svg class="orbit-svg" viewBox="0 0 100 100" aria-hidden="true">
+                <defs>
+                    <mask id="orbit-progress-mask">
+                        <circle class="orbit-mask-track" cx="50" cy="50" r="49"
+                        ></circle>
+                    </mask>
+                </defs>
+
+                <circle class="orbit-base" cx="50" cy="50" r="49"></circle>
+
+                <circle
+                    class="orbit-progress"
+                    cx="50"
+                    cy="50"
+                    r="49"
+                    mask="url(#orbit-progress-mask)"></circle>
+            </svg>
+            <div class="process-center">
+                {
+                    steps.map((step, index) => (
+                        <img
+                            src={step.imageSrc}
+                            alt={step.title}
+                            class={`process-image ${index === 0 ? "is-active" : ""}`}
+                        />
+                    ))
+                }
+            </div>
+
+            {
+                steps.map((step, index) => (
+                    <div
+                        class={`orbit-step ${step.className} ${index === 0 ? "is-active" : ""}`}
+                        data-index={index}
+                    >
+                        <div class="step-content">
+                            <span>{step.number}</span>
+                            <strong>{step.title}</strong>
+                            <p>{step.description}</p>
+                        </div>
+                    </div>
+                ))
+            }
+        </div>
+    </div>
+</section>
+
+<script>
+    import gsap from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    window.addEventListener("load", () => {
+        const section = document.querySelector(".process");
+        const copy = document.querySelector(".process-copy");
+        const label = document.querySelector(".process-copy > span");
+        const titleLines = document.querySelectorAll(".process-copy h2 span");
+        const paragraph = document.querySelector(".process-copy p");
+        const orbit = document.querySelector(".process-orbit");
+        const steps = document.querySelectorAll(".orbit-step");
+        const images = document.querySelectorAll(".process-image");
+        const maskTrack = document.querySelector(".orbit-mask-track");
+
+        const radius = 49;
+        const circumference = 2 * Math.PI * radius;
+
+        gsap.set(maskTrack, {
+            strokeDasharray: circumference,
+            strokeDashoffset: circumference,
+        });
+
+        gsap.set([label, titleLines, paragraph], {
+            y: 36,
+            opacity: 0,
+        });
+
+        gsap.set(orbit, {
+            scale: 0.92,
+            opacity: 0,
+            filter: "blur(12px)",
+        });
+
+        gsap.set(steps, {
+            opacity: 0,
+            scale: 0.9,
+        });
+
+        const intro = gsap.timeline({
+            scrollTrigger: {
+                trigger: section,
+                start: "top 72%",
+                once: true,
+            },
+        });
+
+        intro
+            .to(label, {
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                ease: "power4.out",
+            })
+            .to(
+                titleLines,
+                {
+                    y: 0,
+                    opacity: 1,
+                    duration: 1,
+                    stagger: 0.12,
+                    ease: "power4.out",
+                },
+                "-=0.45",
+            )
+            .to(
+                paragraph,
+                {
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.8,
+                    ease: "power4.out",
+                },
+                "-=0.45",
+            )
+            .to(
+                orbit,
+                {
+                    scale: 1,
+                    opacity: 1,
+                    filter: "blur(0px)",
+                    duration: 1.2,
+                    ease: "power4.out",
+                },
+                "-=0.65",
+            )
+            .to(
+                steps,
+                {
+                    opacity: 1,
+                    scale: 1,
+                    duration: 0.75,
+                    stagger: 0.08,
+                    ease: "power4.out",
+                },
+                "-=0.55",
+            );
+
+        function setActive(index) {
+            steps.forEach((step, i) => {
+                step.classList.toggle("is-active", i === index);
+            });
+
+            images.forEach((image, i) => {
+                image.classList.toggle("is-active", i === index);
+            });
+        }
+
+        ScrollTrigger.create({
+            trigger: section,
+            start: "top top",
+            end: () => window.innerHeight * 8,
+            scrub: true,
+            pin: ".process-sticky",
+
+            onUpdate: (self) => {
+                const progress = self.progress;
+
+                gsap.set(maskTrack, {
+                    strokeDashoffset: circumference * (1 - progress),
+                });
+
+                const index = Math.min(
+                    steps.length - 1,
+                    Math.floor(progress * steps.length),
+                );
+
+                setActive(index);
+            },
+        });
+    });
+</script>
+
+<style>
+    .process {
+        margin-top: 18vh;
+        padding: 0 4rem;
+    }
+
+    .process-sticky {
+        height: 100vh;
+
+        display: grid;
+        grid-template-columns: 0.7fr 1.3fr;
+        align-items: center;
+    }
+
+    .process-copy {
+        align-self: start;
+        padding-top: 4rem;
+    }
+
+    .process-copy span {
+        display: block;
+        margin-bottom: 1.5rem;
+
+        font-size: 0.75rem;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+    }
+
+    .process-copy h2 span {
+        display: block;
+        margin: 0;
+
+        font-size: clamp(3.5rem, 6vw, 7.5rem);
+        line-height: 0.82;
+        letter-spacing: -0.08em;
+        font-weight: 900;
+        text-transform: uppercase;
+    }
+
+    .process-copy p {
+        margin-top: 3rem;
+        padding-top: 2rem;
+        border-top: 1px solid rgba(59, 36, 20, 0.35);
+
+        font-size: 0.78rem;
+        line-height: 1.7;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+    }
+
+    .process-copy,
+    .process-orbit,
+    .orbit-step {
+        will-change: transform, opacity;
+    }
+
+    .process-center {
+        position: relative;
+        width: 70%;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        z-index: 2;
+    }
+
+    .process-image {
+        position: absolute;
+        inset: 0;
+
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+
+        opacity: 0;
+        transform: scale(1) rotate(45deg);
+        filter: blur(5px);
+
+        transition:
+            opacity 0.6s ease,
+            transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+            filter 0.6s ease;
+    }
+
+    .process-image.is-active {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+        filter: blur(0);
+    }
+
+    .process-orbit {
+        --orbit-size: min(70vw, 860px);
+        --orbit-radius: calc(var(--orbit-size) * 0.42);
+
+        position: relative;
+        width: var(--orbit-size);
+        aspect-ratio: 1;
+        margin-inline: auto;
+
+        display: grid;
+        place-items: center;
+    }
+
+    .orbit-line {
+        position: absolute;
+        width: calc(var(--orbit-radius) * 2);
+        aspect-ratio: 1;
+
+        border: 1px dashed rgba(59, 36, 20, 0.35);
+        border-radius: 50%;
+    }
+    .orbit-svg {
+        position: absolute;
+        width: calc(var(--orbit-radius) * 2);
+        aspect-ratio: 1;
+        overflow: visible;
+
+        transform: rotate(-90deg);
+    }
+
+    .orbit-mask-track {
+        fill: none;
+        stroke: white;
+        stroke-width: 2;
+        stroke-linecap: round;
+    }
+
+    .orbit-base {
+        fill: none;
+        stroke: rgba(59, 36, 20, 0.15);
+        stroke-width: 0.18;
+        stroke-dasharray: 1 1.5;
+    }
+
+    .orbit-progress {
+        fill: none;
+        stroke: rgba(59, 36, 20, 0.45);
+        stroke-width: 0.18;
+        stroke-dasharray: 1 1.5;
+    }
+
+    .orbit-step {
+        --x: calc(cos(var(--angle)) * var(--orbit-radius));
+        --y: calc(sin(var(--angle)) * var(--orbit-radius));
+
+        position: absolute;
+        left: 50%;
+        top: 50%;
+
+        transform: translate(-50%, -50%) translate(var(--x), var(--y));
+
+        background: var(--bg);
+        border: 0;
+        padding: 1rem;
+
+        color: inherit;
+        text-align: center;
+        cursor: pointer;
+
+        transition:
+            opacity 0.4s ease,
+            transform 0.4s ease;
+    }
+
+    .orbit-step.is-active {
+        transform: translate(-50%, -50%) translate(var(--x), var(--y))
+            scale(1.06);
+    }
+
+    .step-content {
+        opacity: 0.25;
+        transition: opacity 0.4s ease;
+    }
+
+    .orbit-step.is-active .step-content {
+        opacity: 1;
+    }
+
+    .step-beans {
+        --angle: -90deg;
+    }
+
+    .step-roast {
+        --angle: 0deg;
+    }
+
+    .step-brew {
+        --angle: 90deg;
+    }
+
+    .step-create {
+        --angle: 180deg;
+    }
+
+    .orbit-step span {
+        display: inline-grid;
+        place-items: center;
+
+        width: 3.75rem;
+        height: 3.75rem;
+        margin-bottom: 1rem;
+
+        border-radius: 50%;
+        background: var(--bg);
+        box-shadow: 3px 3px 8px rgba(59, 36, 20, 0.5);
+
+        font-size: 1.75rem;
+        font-weight: 600;
+        letter-spacing: -0.06em;
+    }
+
+    .orbit-step strong {
+        display: block;
+
+        font-size: 1.1rem;
+        letter-spacing: 0.35em;
+        text-transform: uppercase;
+    }
+
+    .orbit-step p {
+        margin: 0.5rem auto 0;
+
+        font-size: 0.82rem;
+        line-height: 1.6;
+        letter-spacing: 0.02em;
+        text-transform: none;
+
+        max-width: 20ch;
+
+        opacity: 0.65;
+    }
+
+    @media (max-width: 900px) {
+        .process {
+            grid-template-columns: 1fr;
+            padding: 4rem 1.5rem;
+        }
+
+        .process-copy {
+            padding-top: 0;
+        }
+
+        .process-orbit {
+            width: 100%;
+            margin-top: 4rem;
+        }
+
+        .orbit-step {
+            width: 10rem;
+        }
+
+        .orbit-step p {
+            display: none;
+        }
+
+        .orbit-step span {
+            width: 3.2rem;
+            height: 3.2rem;
+            font-size: 1.3rem;
+        }
+
+        .orbit-step strong {
+            font-size: 0.8rem;
+        }
+    }
+</style>

@@ -1,0 +1,173 @@
+<footer class="footer">
+    <div class="footer-top">
+        <span>YERBA BUENA</span>
+        <span>EST. 2026</span>
+    </div>
+
+    <div class="footer-main">
+        <h2>
+            <span>UNTIL</span>
+            <span>THE NEXT</span>
+            <span>CUP.</span>
+        </h2>
+
+        <img
+            src="/assets/image.png"
+            alt=""
+            class="footer-cup"
+            aria-hidden="true"
+        />
+    </div>
+
+    <div class="footer-bottom">
+        <div>
+            <span>Connect</span>
+            <p>Instagram</p>
+            <p>Menu</p>
+        </div>
+
+        <div>
+            <span>Open Daily</span>
+            <p>08:00 — 23:00</p>
+        </div>
+
+        <div>
+            <span>Visit</span>
+            <p>Yerba Buena</p>
+            <p>Argentina</p>
+        </div>
+    </div>
+</footer>
+
+<style>
+    .footer {
+        position: relative;
+        overflow: hidden;
+
+        padding: 8rem clamp(2rem, 6vw, 6rem) 3rem;
+
+        background:
+            radial-gradient(
+                ellipse at 70% 32%,
+                rgba(245, 239, 232, 0.08),
+                transparent 42%
+            ),
+            linear-gradient(180deg, #2a170f, #20130d);
+
+        color: #f5efe8;
+    }
+
+    .footer-top {
+        position: relative;
+        z-index: 2;
+
+        display: flex;
+        justify-content: space-between;
+
+        margin-bottom: 5rem;
+
+        font-size: 0.72rem;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+    }
+
+    .footer-main {
+        position: relative;
+        z-index: 1;
+
+        display: block;
+    }
+
+    .footer h2 {
+        position: relative;
+        z-index: 2;
+
+        margin: 0;
+
+        display: flex;
+        flex-direction: column;
+
+        font-size: clamp(5rem, 12vw, 12rem);
+        line-height: 0.78;
+        letter-spacing: -0.08em;
+
+        font-weight: 900;
+        text-transform: uppercase;
+    }
+
+    .footer h2 span {
+        display: block;
+    }
+
+    .footer-cup {
+        position: absolute;
+
+        right: 0;
+        bottom: 0;
+
+        transform: translateY(20%) translateX(2%);
+
+        width: 70vw;
+
+        opacity: 1;
+
+        pointer-events: none;
+    }
+
+    .footer-bottom {
+        position: relative;
+        z-index: 2;
+
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+
+        margin-top: 7rem;
+        padding-top: 2rem;
+
+        border-top: 1px solid rgba(245, 239, 232, 0.28);
+    }
+
+    .footer-bottom span {
+        display: block;
+        margin-bottom: 0.9rem;
+
+        font-size: 0.72rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+
+        opacity: 0.9;
+    }
+
+    .footer-bottom p {
+        margin: 0.35rem 0;
+
+        font-size: 0.9rem;
+        letter-spacing: 0.08em;
+
+        opacity: 0.62;
+    }
+
+    @media (max-width: 900px) {
+        .footer {
+            padding: 6rem 1.5rem 2.5rem;
+        }
+
+        .footer-main {
+            grid-template-columns: 1fr;
+        }
+
+        .footer-cup {
+            justify-self: center;
+
+            width: min(80vw, 420px);
+
+            transform: translateY(-1rem);
+        }
+
+        .footer-bottom {
+            grid-template-columns: 1fr;
+            margin-top: 5rem;
+        }
+    }
+</style>
